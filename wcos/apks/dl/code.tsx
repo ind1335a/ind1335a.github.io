@@ -537,6 +537,7 @@ function Editor({
   const taRef = useRef<HTMLTextAreaElement>(null);
   const preRef = useRef<HTMLPreElement>(null);
   const gutterRef = useRef<HTMLDivElement>(null);
+  const onCursorRef = useRef(onCursor);
   const [scrollTop, setScrollTop] = useState(0);
   const [activeLine, setActiveLine] = useState(0);
 
@@ -549,15 +550,22 @@ function Editor({
     if (ta) ta.scrollTop = 0;
   }, [path]);
 
+  // Keep callbacks out of the layout-effect dependency chain. The parent
+  // passes an inline handler, so depending on it caused React error #185:
+  // report -> parent state update -> new handler -> report, forever.
+  useEffect(() => {
+    onCursorRef.current = onCursor;
+  }, [onCursor]);
+
   const report = useCallback(() => {
     const ta = taRef.current;
     if (!ta) return;
     const upto = ta.value.slice(0, ta.selectionStart);
     const line = upto.split('\n').length;
     const col = upto.length - upto.lastIndexOf('\n');
-    setActiveLine(line - 1);
-    onCursor(line, col, ta.selectionEnd - ta.selectionStart);
-  }, [onCursor]);
+    setActiveLine((current) => (current === line - 1 ? current : line - 1));
+    onCursorRef.current(line, col, ta.selectionEnd - ta.selectionStart);
+  }, []);
 
   useLayoutEffect(report, [value, report]);
 
@@ -1226,7 +1234,7 @@ export default function WCode() {
 
   return (
     <div
-      className="flex h-screen w-full flex-col overflow-hidden bg-[#1e1e1e] text-[#cccccc]"
+      className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#1e1e1e] text-[#cccccc]"
       style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
     >
       {/* title bar */}
