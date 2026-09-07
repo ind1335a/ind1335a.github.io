@@ -1,0 +1,36 @@
+   {
+  "name": "WCOS App Store",
+  "version": 1,
+  "updated": "2026-02-11",
+  "url": "https://ind1335a.github.io/wcos/apks/apps.json",
+  "featured": [
+ {
+      "id": "wcode",
+      "name": "WCode",
+      "developer": "WCOS Labs",
+      "icon": "",
+      "rating": 1,
+      "ratings": 1,
+      "price": "Free",
+      "url": "https://ind1335a.github.io/wcos/apks/dl/code.tsx",
+      "category": "Developer Tools",
+      "tagline": "",
+      "description": "WCODE CODEING TOOLS."
+    }
+  ],
+  "apps": [
+ {
+      "id": "wcode",
+      "name": "WCode",
+      "developer": "WCOS Labs",
+      "icon": "",
+      "rating": 1,
+      "ratings": 1,
+      "price": "Free",
+      "url": "https://ind1335a.github.io/wcos/apks/dl/code.tsx",
+      "category": "Developer Tools",
+      "tagline": "",
+      "description": "WCODE CODEING TOOLS."
+    }
+  ]
+}
